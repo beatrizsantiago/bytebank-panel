@@ -55,7 +55,7 @@ const Header = () => {
                   <Menu
                     activeIndex={0}
                     items={[
-                      { title: 'Minha conta', onClick: () => navigate('/perfil') },
+                      { title: 'Minha conta', onClick: () => navigate('/painel/perfil') },
                       { title: 'Sair', onClick: () => logout() },
                     ]}
                     isWhite
