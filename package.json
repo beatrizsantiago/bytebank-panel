@@ -2,10 +2,7 @@
   "name": "@bytebank/panel",
   "scripts": {
     "start": "webpack serve",
-    "start:standalone": "webpack serve --env standalone",
-    "build": "concurrently npm:build:*",
-    "build:webpack": "webpack --mode=production",
-    "analyze": "webpack --mode=production --env analyze",
+    "build": "webpack --mode=production",
     "lint": "eslint src --ext js,ts,tsx",
     "format": "prettier --write .",
     "check-format": "prettier --check .",
