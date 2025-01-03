@@ -22,7 +22,8 @@ const Header = () => {
   };
 
   const logout = () => {
-    console.log('Logout');
+    localStorage.removeItem('token');
+    navigate('/', { replace: true });
   };
 
   return (
