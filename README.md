@@ -9,7 +9,7 @@
 ### 📌 Stack de Desenvolvimento
 
 - [@ant-design/icons](https://ant.design/components/icon) para biblioteca padrão de ícones;
-- [react-toastify](https://fkhadra.github.io/react-toastify/introduction/) para alertas;
+- [Toastify](https://www.npmjs.com/package/toastify-js) para alertas;
 - [date-fns](https://date-fns.org/) para lidar com datas;
 - [tailwind](https://tailwindcss.com/) para estilização de componentes;
 

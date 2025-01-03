@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu } from '@bytebank/styleguide';
-import { toast } from 'react-toastify';
+
+import toast from '../utils/toast';
 
 type Props = {
   inline?: boolean;
@@ -22,9 +23,9 @@ const NavigationMenu = ({ inline = false }:Props) => {
       activeIndex={activeIndex[pathname]}
       items={[
         { title: 'Início', onClick: () => navigate('/painel') },
-        { title: 'Transferências', onClick: () => toast.warning('Página ainda não implementada!') },
-        { title: 'Investimentos', onClick: () => toast.warning('Página ainda não implementada!') },
-        { title: 'Outros serviços', onClick: () => toast.warning('Página ainda não implementada!') },
+        { title: 'Transferências', onClick: () => toast({ text: 'Página ainda não implementada!', type: 'WARNING' }) },
+        { title: 'Investimentos', onClick: () => toast({ text: 'Página ainda não implementada!', type: 'WARNING' }) },
+        { title: 'Outros serviços', onClick: () => toast({ text: 'Página ainda não implementada!', type: 'WARNING' }) },
       ]}
       inline={inline}
     />
