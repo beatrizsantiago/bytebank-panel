@@ -12,7 +12,7 @@ const StatementList = () => {
         Extrato
       </p>
 
-      {transactions.map((transaction, idx) => (
+      {[...transactions].reverse().map((transaction) => (
         <Item
           key={transaction.id}
           transaction={transaction}
