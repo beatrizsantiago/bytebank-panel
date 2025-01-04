@@ -3,13 +3,14 @@ import { StatementItem } from '@bytebank/styleguide';
 
 import EditModal from './EditModal';
 
-type KindType = 'DEPOSIT' | 'CURRENCY_EXCHANGE' | 'DOC_TED' | 'LEASING';
-
 interface ITransactionData {
-  _id: string;
-  kind: KindType;
+  id: string;
+  accountId: string;
+  type: 'Credit' | 'Debit';
   value: number;
   date: string;
+  from: string;
+  to: string;
 };
 
 type Props = {
@@ -28,7 +29,7 @@ const Item = ({ transaction }:Props) => {
       <StatementItem
         date={transaction.date}
         value={transaction.value}
-        kind={transaction.kind}
+        type={transaction.type}
         onDeleteClick={onDeleteClick}
         onEditClick={() => setShowEditModal(true)}
       />

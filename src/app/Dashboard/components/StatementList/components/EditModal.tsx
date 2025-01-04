@@ -3,13 +3,14 @@ import { Input, Select, Button } from '@bytebank/styleguide';
 
 import Modal from '../../../../../components/Modal';
 
-type KindType = 'DEPOSIT' | 'CURRENCY_EXCHANGE' | 'DOC_TED' | 'LEASING';
-
 interface ITransactionData {
-  _id: string;
-  kind: KindType;
+  id: string;
+  accountId: string;
+  type: 'Credit' | 'Debit';
   value: number;
   date: string;
+  from: string;
+  to: string;
 };
 
 type Props = {
@@ -23,18 +24,16 @@ type OptionType = {
 };
 
 const LABELS:{[key:string]:string} = {
-  CURRENCY_EXCHANGE: 'Câmbio de Moeda',
-  DOC_TED: 'DOC/TED',
-  LEASING: 'Empréstimo e Financiamento',
-  DEPOSIT: 'Depósito',
+  Credit: 'Depósito',
+  Debit: 'Saque',
 };
 
 const OPTIONS = Object.keys(LABELS).map((key) => ({ label: LABELS[key], value: key }));
 
 const EditTransactionModal = ({ onClose, transaction }:Props) => {
-  const [kind, setKind] = useState<OptionType | null>({
-    label: LABELS[transaction.kind],
-    value: transaction.kind,
+  const [type, setType] = useState<OptionType | null>({
+    label: LABELS[transaction.type],
+    value: transaction.type,
   })
   const [value, setValue] = useState(transaction.value.toString());
   const [errors, setErrors] = useState<{ [key:string]: string } | null>(null)
@@ -42,8 +41,8 @@ const EditTransactionModal = ({ onClose, transaction }:Props) => {
   const onEditClick = async () => {
     const floatValue = value ? parseFloat(value.replace(',', '.')) : 0;
 
-    if (!kind) {
-      setErrors({ kind: 'Selecione o tipo de transação' });
+    if (!type) {
+      setErrors({ type: 'Selecione o tipo de transação' });
       return;
     };
 
@@ -69,10 +68,10 @@ const EditTransactionModal = ({ onClose, transaction }:Props) => {
             <Select
               placeholder="Selecione o tipo de transação"
               options={OPTIONS}
-              selected={kind}
-              onChange={(opt) => setKind(opt)}
+              selected={type}
+              onChange={(opt) => setType(opt)}
             />
-            {errors?.kind && <p className="text-red-500 text-sm">{errors.kind}</p>}
+            {errors?.type && <p className="text-red-500 text-sm">{errors.type}</p>}
           </div>
 
           <label className="font-semibold text-primary-main mb-1 text-sm">

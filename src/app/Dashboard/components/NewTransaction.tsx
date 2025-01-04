@@ -1,35 +1,70 @@
 import { useState } from 'react';
 import { Input, Select, Button } from '@bytebank/styleguide';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { addTransaction } from '../../../feature/transactions/slice';
 import Pixel2Img from '../../../assets/pixels_2.svg';
 import WomanWithCreditCardImg from '../../../assets/woman_with_credit_card.svg';
+import useApi from '../../../services/useApi';
 
 type OptionType = {
   label: string;
   value: string;
 };
 
+const TYPE_LABEL = {
+  Credit: 'Depósito',
+  Debit: 'Saque',
+};
+
 const NewTransaction = ():JSX.Element => {
-  const [kind, setKind] = useState<OptionType | null>(null)
+  const [type, setType] = useState<OptionType | null>(null)
   const [value, setValue] = useState('');
   const [errors, setErrors] = useState<{ [key:string]: string } | null>(null)
 
+  // @ts-ignore
+  const transactionTypes = useSelector((state) => state.transactionTypes.list);
+  // @ts-ignore
+  const accountId = useSelector((state) => state.account.id);
+
+  const dispatch = useDispatch();
+
   const onAddTransactionClick = async () => {
     const floatValue = value ? parseFloat(value.replace(',', '.')) : 0;
+    const absValue = Math.abs(floatValue);
 
-    if (!kind) {
-      setErrors({ kind: 'Selecione o tipo de transação' });
+    if (!type) {
+      setErrors({ type: 'Selecione o tipo de transação' });
       return;
     };
 
-    if (floatValue <= 0) {
-      setErrors({ value: 'O valor da transação deve ser maior que zero' });
+    if (absValue === 0) {
+      setErrors({ value: 'Informe um valor' });
       return;
     };
+
+    const formattedValue = type.value === 'Debit' ? -absValue : absValue;
+
+    const response = await useApi({
+      url: 'account/transaction',
+      options: {
+        method: 'POST',
+        body: JSON.stringify({
+          accountId,
+          type: type.value,
+          value: formattedValue,
+          from: "",
+          to: "",
+          anexo: "text",
+        }),
+      },
+    });
+
+    const data = await response.json();
+
+    dispatch(addTransaction({ ...data.result }));
 
     setErrors(null);
-
-    console.log('Transaction added');
   };
 
   return (
@@ -66,28 +101,11 @@ const NewTransaction = ():JSX.Element => {
         <div className="min-w-[280px] md:min-w-[350px] mb-6">
           <Select
             placeholder="Selecione o tipo de transação"
-            options={[
-              {
-                label: 'Câmbio de Moeda',
-                value: 'CURRENCY_EXCHANGE',
-              },
-              {
-                label: 'DOC/TED',
-                value: 'DOC_TED',
-              },
-              {
-                label: 'Empréstimo e Financiamento',
-                value: 'LEASING',
-              },
-              {
-                label: 'Depósito',
-                value: 'DEPOSIT',
-              },
-            ]}
-            selected={kind}
-            onChange={(opt) => setKind(opt)}
+            options={transactionTypes.map((t) => ({ label: TYPE_LABEL[t], value: t }))}
+            selected={type}
+            onChange={(opt) => setType(opt)}
           />
-          {errors?.kind && <p className="text-red-500 text-sm">{errors.kind}</p>}
+          {errors?.type && <p className="text-red-500 text-sm">{errors.type}</p>}
         </div>
 
         <label className="font-semibold text-primary-light mb-1">

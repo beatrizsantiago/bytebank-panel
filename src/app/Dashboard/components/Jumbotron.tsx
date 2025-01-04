@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 import { formatDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { useSelector } from 'react-redux';
 
 import { money } from '../../../utils/formats';
+import { currentBalance } from '../../../feature/transactions/selectors';
 import Pixel1Img from '../../../assets/pixels_1.svg';
 import AccountBalanceImg from '../../../assets/account_balance.svg';
 
@@ -11,6 +13,8 @@ const Jumbotron = () => {
   const [showBalance, setShowBalance] = useState(false)
 
   const today = new Date();
+
+  const balance = useSelector(currentBalance);
 
   return (
     <div className="w-full h-[655px] bg-primary-main rounded-lg p-8 flex flex-col text-white sm:flex-row sm:h-[400px] relative">
@@ -64,7 +68,7 @@ const Jumbotron = () => {
             Conta Corrente
           </p>
           <p className="text-3xl">
-            {showBalance ? money(100) : 'R$ ********'}
+            {showBalance ? money(balance) : 'R$ ********'}
           </p>
         </div>
       </div>
