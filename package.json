@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.1",
+    "@reduxjs/toolkit": "^2.5.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/systemjs": "^6.1.1",
@@ -50,9 +51,8 @@
     "date-fns": "^4.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-redux": "^9.1.2",
+    "react-redux": "^7.2.8",
     "react-router-dom": "^6.28.0",
-    "redux": "^5.0.1",
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1",
     "toastify-js": "^1.12.0"
