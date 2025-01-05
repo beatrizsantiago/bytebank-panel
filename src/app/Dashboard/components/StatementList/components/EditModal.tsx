@@ -1,17 +1,8 @@
 import { useState } from 'react';
 import { Input, Select, Button } from '@bytebank/styleguide';
 
+import { ITransactionData } from '../../../../../feature/transactions/types';
 import Modal from '../../../../../components/Modal';
-
-interface ITransactionData {
-  id: string;
-  accountId: string;
-  type: 'Credit' | 'Debit';
-  value: number;
-  date: string;
-  from: string;
-  to: string;
-};
 
 type Props = {
   onClose: () => void;

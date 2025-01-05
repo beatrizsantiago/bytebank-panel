@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
 
+import { ITransactionData } from '../../../../feature/transactions/types';
+import { RootState } from '../../../store';
 import Item from './components/Item';
 
 const StatementList = () => {
-  // @ts-ignore
-  const transactions = useSelector((state) => state.transactions.list);
+  const transactions = useSelector<RootState, ITransactionData[]>((state) => state.transactions.list);
 
   return (
     <div className="flex flex-col items-center w-full min-h-[calc(100vh-144px)] max-h-[902px] bg-white rounded-lg lg:w-[285px]">

@@ -1,6 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+import { ITransactionData, ITransactionsState } from "./types";
+
+const initialState:ITransactionsState = {
   list: [],
 };
 
@@ -8,10 +10,10 @@ const transactionsSlice = createSlice({
   name: 'transactions',
   initialState,
   reducers: {
-    setTransactionsList: (state, action) => {
+    setTransactionsList: (state, action: PayloadAction<ITransactionData[]>) => {
       state.list = action.payload;
     },
-    addTransaction: (state, action) => {
+    addTransaction: (state, action: PayloadAction<ITransactionData>) => {
       state.list.push({
         ...action.payload,
       });

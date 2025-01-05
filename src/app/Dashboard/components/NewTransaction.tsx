@@ -3,6 +3,8 @@ import { Input, Select, Button } from '@bytebank/styleguide';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addTransaction } from '../../../feature/transactions/slice';
+import { TransactionTypes } from '../../../feature/transactionTypes/types';
+import { RootState } from '../../store';
 import Pixel2Img from '../../../assets/pixels_2.svg';
 import WomanWithCreditCardImg from '../../../assets/woman_with_credit_card.svg';
 import useApi from '../../../services/useApi';
@@ -17,15 +19,21 @@ const TYPE_LABEL = {
   Debit: 'Saque',
 };
 
+const acceptedFileExtensions = [
+  'application/pdf',
+  'image/png',
+  'image/jpg',
+  'image/jpeg',
+];
+
 const NewTransaction = ():JSX.Element => {
   const [type, setType] = useState<OptionType | null>(null)
   const [value, setValue] = useState('');
+  const [attachment, setAttachment] = useState<File | null>(null);
   const [errors, setErrors] = useState<{ [key:string]: string } | null>(null)
 
-  // @ts-ignore
-  const transactionTypes = useSelector((state) => state.transactionTypes.list);
-  // @ts-ignore
-  const accountId = useSelector((state) => state.account.id);
+  const transactionTypes = useSelector<RootState, TransactionTypes>((state) => state.transactionTypes.list);
+  const accountId = useSelector<RootState, string>((state) => state.account.id);
 
   const dispatch = useDispatch();
 
@@ -55,7 +63,7 @@ const NewTransaction = ():JSX.Element => {
           value: formattedValue,
           from: "",
           to: "",
-          anexo: "text",
+          anexo: attachment,
         }),
       },
     });
@@ -94,7 +102,7 @@ const NewTransaction = ():JSX.Element => {
       />
 
       <div className="w-full flex flex-col items-center z-10 relative md:items-start">
-        <h2 className="font-bold text-lg text-primary-light mb-8">
+        <h2 className="font-bold text-lg text-primary-main mb-8">
           Nova transação
         </h2>
 
@@ -108,7 +116,7 @@ const NewTransaction = ():JSX.Element => {
           {errors?.type && <p className="text-red-500 text-sm">{errors.type}</p>}
         </div>
 
-        <label className="font-semibold text-primary-light mb-1">
+        <label className="font-semibold text-primary-main mb-1">
           Valor
         </label>
         <div className="max-w-[250px] mb-6">
@@ -121,6 +129,18 @@ const NewTransaction = ():JSX.Element => {
             type="number"
           />
           {errors?.value && <p className="text-red-500 text-sm">{errors.value}</p>}
+        </div>
+
+        <label className="font-semibold text-primary-main mb-1">
+          Recibo
+        </label>
+        <div className="max-w-[250px] mb-6">
+          <input
+            type="file"
+            onChange={(event) => setAttachment(event?.target?.files?.[0])}
+            accept={acceptedFileExtensions.join(',')}
+          />
+          {errors?.attachment && <p className="text-red-500 text-sm">{errors.attachment}</p>}
         </div>
 
         <Button

@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
+import { ITransactionTypesState } from "./types";
+
+const initialState:ITransactionTypesState = {
   list: [
     'Debit',
     'Credit',

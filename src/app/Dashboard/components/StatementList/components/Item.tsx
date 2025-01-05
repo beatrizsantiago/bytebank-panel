@@ -1,17 +1,8 @@
 import { useState } from 'react';
 import { StatementItem } from '@bytebank/styleguide';
 
+import { ITransactionData } from '../../../../../feature/transactions/types';
 import EditModal from './EditModal';
-
-interface ITransactionData {
-  id: string;
-  accountId: string;
-  type: 'Credit' | 'Debit';
-  value: number;
-  date: string;
-  from: string;
-  to: string;
-};
 
 type Props = {
   transaction: ITransactionData;
