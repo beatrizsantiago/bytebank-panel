@@ -8,15 +8,11 @@ import { RootState } from '../../store';
 import Pixel2Img from '../../../assets/pixels_2.svg';
 import WomanWithCreditCardImg from '../../../assets/woman_with_credit_card.svg';
 import useApi from '../../../services/useApi';
+import TYPE_LABELS from '../../../utils/typeLabels';
 
 type OptionType = {
   label: string;
   value: string;
-};
-
-const TYPE_LABEL = {
-  Credit: 'Depósito',
-  Debit: 'Saque',
 };
 
 const acceptedFileExtensions = [
@@ -72,6 +68,9 @@ const NewTransaction = ():JSX.Element => {
 
     dispatch(addTransaction({ ...data.result }));
 
+    setValue('');
+    setType(null);
+    setAttachment(null);
     setErrors(null);
   };
 
@@ -109,7 +108,7 @@ const NewTransaction = ():JSX.Element => {
         <div className="min-w-[280px] md:min-w-[350px] mb-6">
           <Select
             placeholder="Selecione o tipo de transação"
-            options={transactionTypes.map((t) => ({ label: TYPE_LABEL[t], value: t }))}
+            options={transactionTypes.map((t) => ({ label: TYPE_LABELS[t], value: t }))}
             selected={type}
             onChange={(opt) => setType(opt)}
           />
