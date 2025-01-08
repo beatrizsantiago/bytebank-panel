@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { StatementItem } from '@bytebank/styleguide';
+import { useDispatch } from 'react-redux';
 
 import { ITransactionData } from '../../../../../feature/transactions/types';
+import { deleteTransaction } from '../../../../../feature/transactions/slice';
 import EditModal from './EditModal';
+import toast from '../../../../../utils/toast';
 
 type Props = {
   transaction: ITransactionData;
@@ -11,8 +14,11 @@ type Props = {
 const Item = ({ transaction }:Props) => {
   const [showEditModal, setShowEditModal] = useState(false);
 
+  const dispatch = useDispatch();
+
   const onDeleteClick = async () => {
-    console.log('delete');
+    dispatch(deleteTransaction(transaction.id));
+    toast({ type: 'SUCCESS', text: 'Transação excluída com sucesso' });
   };
 
   return (
