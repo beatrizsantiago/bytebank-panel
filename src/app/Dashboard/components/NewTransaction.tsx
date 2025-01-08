@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTransaction } from '../../../feature/transactions/slice';
 import { TransactionTypes } from '../../../feature/transactionTypes/types';
 import { RootState } from '../../store';
+import { currentBalance } from '../../../feature/transactions/selectors';
 import Pixel2Img from '../../../assets/pixels_2.svg';
 import WomanWithCreditCardImg from '../../../assets/woman_with_credit_card.svg';
 import useApi from '../../../services/useApi';
@@ -30,6 +31,7 @@ const NewTransaction = ():JSX.Element => {
 
   const transactionTypes = useSelector<RootState, TransactionTypes>((state) => state.transactionTypes.list);
   const accountId = useSelector<RootState, string>((state) => state.account.id);
+  const balance = useSelector(currentBalance);
 
   const dispatch = useDispatch();
 
@@ -39,6 +41,11 @@ const NewTransaction = ():JSX.Element => {
 
     if (!type) {
       setErrors({ type: 'Selecione o tipo de transação' });
+      return;
+    };
+
+    if (absValue > balance && type.value === 'Debit') {
+      setErrors({ value: 'Saldo insuficiente' });
       return;
     };
 
