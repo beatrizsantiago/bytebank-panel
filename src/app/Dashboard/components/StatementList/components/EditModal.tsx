@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Input, Select, Button } from '@bytebank/styleguide';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ITransactionData } from '../../../../../feature/transactions/types';
+import { currentBalance } from '../../../../../feature/transactions/selectors';
+import { editTransaction } from '../../../../../feature/transactions/slice';
 import Modal from '../../../../../components/Modal';
 
 type Props = {
@@ -11,7 +14,7 @@ type Props = {
 
 type OptionType = {
   label: string;
-  value: string;
+  value: 'Credit' | 'Debit';
 };
 
 const LABELS:{[key:string]:string} = {
@@ -27,24 +30,45 @@ const EditTransactionModal = ({ onClose, transaction }:Props) => {
     value: transaction.type,
   })
   const [value, setValue] = useState(transaction.value.toString());
-  const [errors, setErrors] = useState<{ [key:string]: string } | null>(null)
+  const [errors, setErrors] = useState<{ [key:string]: string } | null>(null);
+
+  const balance = useSelector(currentBalance);
+
+  const dispatch = useDispatch();
 
   const onEditClick = async () => {
     const floatValue = value ? parseFloat(value.replace(',', '.')) : 0;
+    const absValue = Math.abs(floatValue);
 
     if (!type) {
       setErrors({ type: 'Selecione o tipo de transação' });
       return;
     };
 
-    if (floatValue <= 0) {
-      setErrors({ value: 'O valor da transação deve ser maior que zero' });
+    if (absValue > balance && type.value === 'Debit') {
+      setErrors({ value: 'Saldo insuficiente' });
       return;
     };
 
-    setErrors(null);
+    if (absValue === 0) {
+      setErrors({ value: 'Informe um valor' });
+      return;
+    };
 
-    console.log('edit');
+    const formattedValue = type.value === 'Debit' ? -absValue : absValue;
+
+    const data = {
+      id: transaction.id,
+      type: type.value,
+      value: formattedValue,
+    }
+
+    dispatch(editTransaction({ ...data }));
+
+    setValue('');
+    setType(null);
+    setErrors(null);
+    onClose();
   };
 
   return (

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { ITransactionData, ITransactionsState } from "./types";
+import { IEditedTransactionData, ITransactionData, ITransactionsState } from "./types";
 
 const initialState:ITransactionsState = {
   list: [],
@@ -18,9 +18,17 @@ const transactionsSlice = createSlice({
         ...action.payload,
       });
     },
+    editTransaction: (state, action: PayloadAction<IEditedTransactionData>) => {
+      const index = state.list.findIndex((transaction) => transaction.id === action.payload.id);
+      state.list[index] = {
+        ...state.list[index],
+        type: action.payload.type,
+        value: action.payload.value
+      };
+    }
   },
 });
 
-export const { addTransaction, setTransactionsList } = transactionsSlice.actions;
+export const { addTransaction, setTransactionsList, editTransaction } = transactionsSlice.actions;
 
 export default transactionsSlice.reducer;

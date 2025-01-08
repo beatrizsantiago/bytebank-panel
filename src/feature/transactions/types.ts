@@ -10,4 +10,10 @@ export interface ITransactionData {
 
 export interface ITransactionsState {
   list: ITransactionData[];
-}
+};
+
+export interface IEditedTransactionData {
+  id: string;
+  type: 'Credit' | 'Debit';
+  value: number;
+};
