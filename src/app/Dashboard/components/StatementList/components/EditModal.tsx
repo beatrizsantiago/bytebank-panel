@@ -6,6 +6,7 @@ import { ITransactionData } from '../../../../../feature/transactions/types';
 import { currentBalance } from '../../../../../feature/transactions/selectors';
 import { editTransaction } from '../../../../../feature/transactions/slice';
 import Modal from '../../../../../components/Modal';
+import toast from '../../../../../utils/toast';
 
 type Props = {
   onClose: () => void;
@@ -68,6 +69,7 @@ const EditTransactionModal = ({ onClose, transaction }:Props) => {
     setValue('');
     setType(null);
     setErrors(null);
+    toast({ text: 'Transação atualizada com sucesso', type: 'SUCCESS' });
     onClose();
   };
 
