@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  CloseOutlined, FilterFilled, LeftOutlined,
-  RightOutlined, SearchOutlined,
+  CloseOutlined, LeftOutlined, RightOutlined, SearchOutlined,
 } from '@ant-design/icons';
 
 import { ITransactionData } from '../../../../feature/transactions/types';
 import { RootState } from '../../../store';
 import Item from './components/Item';
 import TYPE_LABELS from '../../../../utils/typeLabels';
+
+const TYPE_FILTER = ['Credit', 'Debit'];
 
 const StatementList = () => {
   const transactions = useSelector<RootState, ITransactionData[]>((state) => state.transactions.list);
@@ -17,10 +18,7 @@ const StatementList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState<string | null>(null);
   const [searchTimer, setSearchTimer] = useState<NodeJS.Timeout | null>(null);
-
-  console.log(transactions.length);
-
-  console.log(new Date(transactionsList[0]?.date)?.getMonth());
+  const [typeFilters, setTypeFilters] = useState<string[]>([]);
 
   // get the integer part of the division and add 1 if there is a remainder
   const numberOfPages = Math.trunc(transactionsList.length / 5) + (((transactionsList.length / 5) % 1) > 0 ? 1 : 0);
@@ -33,32 +31,47 @@ const StatementList = () => {
       setSearchValue(value);
       clearTimeout(searchTimer as unknown as number);
       setSearchTimer(setTimeout(() => {
-        setTransactionsList(current => current.filter((transaction) => transaction.value.toString().includes(value)));
+        setTransactionsList(transactions.filter((transaction) => transaction.value.toString().includes(value)));
+        setTypeFilters([]);
         setCurrentPage(1);
       }, 1000));
     }
     if (!value) {
-      setTransactionsList([...transactions].reverse());
+      setTransactionsList([...transactions]);
       setCurrentPage(1);
     }
   };
 
+  const onTypeFilterClick = (type:string) => {
+    if (typeFilters.includes(type)) {
+      const newTypeFilters = [...typeFilters].filter((currentType) => currentType !== type)
+      setTypeFilters(newTypeFilters);
+      if (newTypeFilters.length === 0) {
+        setTransactionsList([...transactions]);
+      } else {
+        setTransactionsList(transactions.filter((transaction) => transaction.type !== type));
+      }
+    } else {
+      setTransactionsList((
+        transactions.filter((transaction) => transaction.type === type || typeFilters.includes(transaction.type))
+      ));
+      setTypeFilters((current) => [...current, type]);
+    }
+    setSearchValue(null);
+    setCurrentPage(1);
+  }
+
   useEffect(() => {
-    setTransactionsList([...transactions].reverse());
+    setTransactionsList([...transactions]);
   }, [transactions])
 
   return (
-    <div className="flex flex-col items-center w-full min-h-[calc(100vh-144px)] max-h-[902px] bg-white rounded-lg lg:w-[285px] overflow-hidden">
-      <div className="w-full flex items-center justify-between px-6 mt-6">
-        <p className="w-full text-left sm:text-center font-bold text-lg lg:text-left">
-          Extrato
-        </p>
-        <button className="text-primary-main">
-          <FilterFilled />
-        </button>
-      </div>
+    <div className="relative flex flex-col items-center w-full min-h-[calc(100vh-144px)] max-h-[902px] bg-white rounded-lg lg:w-[285px] overflow-hidden">
+      <p className="w-full text-left sm:text-center font-bold text-lg lg:text-left px-6 mt-6">
+        Extrato
+      </p>
 
-      <div className="w-full py-2 px-6 mt-2">
+      <div className="w-full py-2 px-6 mt-1">
         <div className="w-full h-[38px] pl-3 py-2 flex items-center justify-between border border-primary-main rounded-md text-primary-main">
           <input
             className="w-[85%] outline-none ring-0 text-sm"
@@ -77,7 +90,25 @@ const StatementList = () => {
         </div>
       </div>
 
-      {transactionsList.slice((currentPage * 5 - 5), currentPage * 5).map((transaction) => (
+      <div className="w-full flex flex-col px-6">
+        <p className="mb-1 font-semibold text-sm">Filtrar por tipo</p>
+        <div className="flex">
+          {TYPE_FILTER.map((type) => (
+            <button key={type} className="text-primary-main flex items-center">
+              <input
+                type="checkbox"
+                id={type}
+                name={type}
+                className="mr-2"
+                onClick={() => onTypeFilterClick(type)}
+              />
+              <label htmlFor={type} className="mr-4">{TYPE_LABELS[type]}</label>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {transactionsList.slice((currentPage * 5 - 5), currentPage * 5).reverse().map((transaction) => (
         <Item
           key={transaction.id}
           transaction={transaction}
