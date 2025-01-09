@@ -9,8 +9,8 @@ type Props = {
 
 const activeIndex:{[key: string]:number} = {
   '/painel': 0,
-  '/transferencias': 1,
-  '/investimentos': 2,
+  '/painel/analise-financeira': 1,
+  '/transferencias': 2,
   '/outros': 3,
 };
 
@@ -23,8 +23,8 @@ const NavigationMenu = ({ inline = false }:Props) => {
       activeIndex={activeIndex[pathname]}
       items={[
         { title: 'Início', onClick: () => navigate('/painel') },
+        { title: 'Análises', onClick: () => navigate('/painel/analise-financeira') },
         { title: 'Transferências', onClick: () => toast({ text: 'Página ainda não implementada!', type: 'WARNING' }) },
-        { title: 'Investimentos', onClick: () => toast({ text: 'Página ainda não implementada!', type: 'WARNING' }) },
         { title: 'Outros serviços', onClick: () => toast({ text: 'Página ainda não implementada!', type: 'WARNING' }) },
       ]}
       inline={inline}

@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import useApi from "../services/useApi";
 import Dashboard from "./Dashboard";
+import FinancialAnalysis from "./FinancialAnalysis";
 import Profile from "./Profile";
 
 import { setTransactionsList } from '../feature/transactions/slice';
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     path: "/painel/perfil",
     element: <Profile />,
   },
+  {
+    path: "/painel/analise-financeira",
+    element: <FinancialAnalysis />,
+  }
 ]);
 
 const Routes = (): JSX.Element => {
