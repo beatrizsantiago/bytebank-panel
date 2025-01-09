@@ -4,10 +4,10 @@ import {
   CloseOutlined, LeftOutlined, RightOutlined, SearchOutlined,
 } from '@ant-design/icons';
 
-import { ITransactionData } from '../../../../feature/transactions/types';
-import { RootState } from '../../../store';
+import { ITransactionData } from '../../feature/transactions/types';
+import { RootState } from '../../app/store';
 import Item from './components/Item';
-import TYPE_LABELS from '../../../../utils/typeLabels';
+import TYPE_LABELS from '../../utils/typeLabels';
 
 const TYPE_FILTER = ['Credit', 'Debit'];
 
@@ -22,6 +22,8 @@ const StatementList = () => {
 
   // get the integer part of the division and add 1 if there is a remainder
   const numberOfPages = Math.trunc(transactionsList.length / 5) + (((transactionsList.length / 5) % 1) > 0 ? 1 : 0);
+
+  const hasTransactions = transactions.length > 0;
 
   const disableNextButton = currentPage === numberOfPages;
   const disablePreviousButton = currentPage === 1;
@@ -108,6 +110,12 @@ const StatementList = () => {
         </div>
       </div>
 
+      {!hasTransactions && (
+        <p className="w-full text-center text-sm mt-6">
+          Não há transações
+        </p>
+      )}
+
       {transactionsList.slice((currentPage * 5 - 5), currentPage * 5).reverse().map((transaction) => (
         <Item
           key={transaction.id}
@@ -115,31 +123,33 @@ const StatementList = () => {
         />
       ))}
 
-      <div className="flex justify-center w-full mt-6 text-primary-main m-2">
-        <button
-          className={`min-w-8 h-8 rounded-md flex items-center justify-center ${disablePreviousButton ? 'text-gray-light' : 'hover:bg-primary-light'}`}
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={disablePreviousButton}
-        >
-          <LeftOutlined />
-        </button>
-        {Array.from({ length: numberOfPages }, (_, i) => (
+      {hasTransactions && (
+        <div className="flex justify-center w-full mt-6 text-primary-main m-2">
           <button
-            key={i}
-            className={`min-w-8 h-8 rounded-md flex items-center justify-center hover:bg-primary-light ${currentPage === i + 1 ? 'bg-primary-light' : ''}`}
-            onClick={() => setCurrentPage(i + 1)}
+            className={`min-w-8 h-8 rounded-md flex items-center justify-center ${disablePreviousButton ? 'text-gray-light' : 'hover:bg-primary-light'}`}
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={disablePreviousButton}
           >
-            {i + 1}
+            <LeftOutlined />
           </button>
-        ))}
-        <button
-          className={`min-w-8 h-8 rounded-md flex items-center justify-center ${disableNextButton ? 'text-gray-light' : 'hover:bg-primary-light'}`}
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={disableNextButton}
-        >
-          <RightOutlined />
-        </button>
-      </div>
+          {Array.from({ length: numberOfPages }, (_, i) => (
+            <button
+              key={i}
+              className={`min-w-8 h-8 rounded-md flex items-center justify-center hover:bg-primary-light ${currentPage === i + 1 ? 'bg-primary-light' : ''}`}
+              onClick={() => setCurrentPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            className={`min-w-8 h-8 rounded-md flex items-center justify-center ${disableNextButton ? 'text-gray-light' : 'hover:bg-primary-light'}`}
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={disableNextButton}
+          >
+            <RightOutlined />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

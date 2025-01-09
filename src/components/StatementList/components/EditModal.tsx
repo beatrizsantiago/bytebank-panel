@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Input, Select, Button } from '@bytebank/styleguide';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ITransactionData } from '../../../../../feature/transactions/types';
-import { currentBalance } from '../../../../../feature/transactions/selectors';
-import { editTransaction } from '../../../../../feature/transactions/slice';
-import Modal from '../../../../../components/Modal';
-import toast from '../../../../../utils/toast';
+import { ITransactionData } from '../../../feature/transactions/types';
+import { currentBalance } from '../../../feature/transactions/selectors';
+import { editTransaction } from '../../../feature/transactions/slice';
+import Modal from '../../../components/Modal';
+import toast from '../../../utils/toast';
 
 type Props = {
   onClose: () => void;

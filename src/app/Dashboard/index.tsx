@@ -1,8 +1,8 @@
 import Header from '../../components/Header';
 import InlineMenu from '../../components/InlineMenu';
+import Jumbotron from '../../components/Jumbotron';
 import Sidebar from '../../components/Sidebar';
-import Jumbotron from './components/Jumbotron';
-import StatementList from './components/StatementList';
+import StatementList from '../../components/StatementList';
 import NewTransaction from './components/NewTransaction';
 
 const Dashboard = ():JSX.Element => (
