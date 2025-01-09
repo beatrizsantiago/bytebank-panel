@@ -4,10 +4,10 @@ import { formatDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useSelector } from 'react-redux';
 
-import { money } from '../../../utils/formats';
-import { currentBalance } from '../../../feature/transactions/selectors';
-import Pixel1Img from '../../../assets/pixels_1.svg';
-import AccountBalanceImg from '../../../assets/account_balance.svg';
+import { money } from '../utils/formats';
+import { currentBalance } from '../feature/transactions/selectors';
+import Pixel1Img from '../assets/pixels_1.svg';
+import AccountBalanceImg from '../assets/account_balance.svg';
 
 const Jumbotron = () => {
   const [showBalance, setShowBalance] = useState(false)
