@@ -50,21 +50,25 @@ const AnalysisContainer = ():JSX.Element => {
           </div>
         </div>
 
-        <div className="w-full rounded-lg overflow-hidden">
-          <Chart
-            chartType="PieChart"
-            data={[
-              ['Transactions', 'Value'],
-              ['Depósito', totalDeposit],
-              ['Saque', Math.abs(totalWithdraw)],
-            ]}
-            options={{
-              pieHole: 0.4,
-            }}
-            width="100%"
-            height="200px"
-          />
-        </div>
+        {(totalDeposit === 0 && totalWithdraw === 0) ? (
+          <p className="text-center text-md">Ainda não é possível realizar uma análise!</p>
+        ) : (
+          <div className="w-full rounded-lg overflow-hidden">
+            <Chart
+              chartType="PieChart"
+              data={[
+                ['Transactions', 'Value'],
+                ['Depósito', totalDeposit],
+                ['Saque', Math.abs(totalWithdraw)],
+              ]}
+              options={{
+                pieHole: 0.4,
+              }}
+              width="100%"
+              height="200px"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
