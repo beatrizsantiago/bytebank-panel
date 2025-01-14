@@ -16,7 +16,7 @@ const AnalysisContainer = ():JSX.Element => {
     .reduce((acc, transaction) => acc + transaction.value, 0);
 
   return (
-    <div className="p-8 bg-gray-medium rounded-lg mt-6 relative h-[630px] md:h-[478px]">
+    <div className="p-8 bg-gray-medium rounded-lg mt-6 relative h-[450px] md:h-[478px]">
       <img
         src={Pixel2Img}
         alt="Pixels"
@@ -39,14 +39,14 @@ const AnalysisContainer = ():JSX.Element => {
         </h2>
 
         <div className="flex justify-between gap-4 my-8">
-          <div className="w-full flex flex-col items-center gap-2 bg-primary-main text-white p-4 rounded-lg">
-            <p className="text-sm">Total depositado</p>
-            <p className="text-lg">{money(totalDeposit)}</p>
+          <div className="w-full flex flex-col items-center justify-center gap-2 bg-primary-main text-white p-4 rounded-lg">
+            <p className="text-sm text-center">Total depositado</p>
+            <p className="text-sm md:text-md lg:text-lg">{money(totalDeposit)}</p>
           </div>
 
-          <div className="w-full flex flex-col items-center gap-2 bg-primary-main text-white p-4 rounded-lg">
-            <p className="text-sm">Total sacado</p>
-            <p className="text-lg">{money(totalWithdraw)}</p>
+          <div className="w-full flex flex-col items-center justify-center gap-2 bg-primary-main text-white p-4 rounded-lg">
+            <p className="text-sm text-center">Total sacado</p>
+            <p className="text-sm md:text-md lg:text-lg">{money(totalWithdraw)}</p>
           </div>
         </div>
 
