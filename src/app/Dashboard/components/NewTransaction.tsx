@@ -146,7 +146,7 @@ const NewTransaction = ():JSX.Element => {
             type="file"
             onChange={(event) => setAttachment(event?.target?.files?.[0])}
             accept={acceptedFileExtensions.join(',')}
-            className="w-[140px] overflow-hidden"
+            className="w-[145px] overflow-hidden"
           />
           {attachment && (
             <label><b>{filename(attachment.name)}</b></label>
