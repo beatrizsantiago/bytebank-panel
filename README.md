@@ -22,19 +22,19 @@
 
 ### 🎯 Getting Started
 
-Verificar Instalação do Node.js
+Com o docker instalado, contrua a imagem:
 
-- Abra um terminal e execute o comando:
-    
-  ```bash
-  node -v
   ```
-    
-- Se aparecer uma versão como a listada abaixo significa que o Node.js está instalado corretamente. Caso contrário, baixe e instale-o a partir do [site oficial](https://nodejs.dev/en/learn/) ou procure "Node.js" no Google.
-    
-  ```bash
-  v20.18.0
+    docker build -t bytebank:panel .
   ```
+
+E depois execute o container:
+
+  ```
+    docker run -p 8082:8082 bytebank:panel
+  ```
+
+Para utilizar o projeto sem o docker, siga os seguintes comandos:
 
 Instalar as dependências
 
