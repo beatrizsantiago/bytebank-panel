@@ -6,6 +6,7 @@ import { addTransaction } from '../../../feature/transactions/slice';
 import { TransactionTypes } from '../../../feature/transactionTypes/types';
 import { RootState } from '../../store';
 import { currentBalance } from '../../../feature/transactions/selectors';
+import { filename } from '../../../utils/formats';
 import Pixel2Img from '../../../assets/pixels_2.svg';
 import WomanWithCreditCardImg from '../../../assets/woman_with_credit_card.svg';
 import useApi from '../../../services/useApi';
@@ -73,7 +74,7 @@ const NewTransaction = ():JSX.Element => {
 
     const data = await response.json();
 
-    dispatch(addTransaction({ ...data.result }));
+    dispatch(addTransaction({ ...data.result, attachment }));
 
     setValue('');
     setType(null);
@@ -140,12 +141,16 @@ const NewTransaction = ():JSX.Element => {
         <label className="font-semibold text-primary-main mb-1">
           Recibo
         </label>
-        <div className="max-w-[250px] mb-6">
+        <div className="max-w-[250px] mb-6 overflow-hidden">
           <input
             type="file"
             onChange={(event) => setAttachment(event?.target?.files?.[0])}
             accept={acceptedFileExtensions.join(',')}
+            className="w-[140px] overflow-hidden"
           />
+          {attachment && (
+            <label><b>{filename(attachment.name)}</b></label>
+          )}
           {errors?.attachment && <p className="text-red-500 text-sm">{errors.attachment}</p>}
         </div>
 

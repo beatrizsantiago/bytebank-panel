@@ -13,7 +13,7 @@ const TYPE_FILTER = ['Credit', 'Debit'];
 
 const StatementList = () => {
   const transactions = useSelector<RootState, ITransactionData[]>((state) => state.transactions.list);
-  
+
   const [transactionsList, setTransactionsList] = useState<ITransactionData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState<string | null>(null);
@@ -62,6 +62,11 @@ const StatementList = () => {
     setSearchValue(null);
     setCurrentPage(1);
   }
+
+  const reversedList = transactionsList.reduceRight((acc, user) => {
+    acc.push(user);
+    return acc;
+  }, []);
 
   useEffect(() => {
     setTransactionsList([...transactions]);
@@ -116,7 +121,7 @@ const StatementList = () => {
         </p>
       )}
 
-      {transactionsList.slice((currentPage * 5 - 5), currentPage * 5).reverse().map((transaction) => (
+      {reversedList.slice((currentPage * 5 - 5), currentPage * 5).map((transaction) => (
         <Item
           key={transaction.id}
           transaction={transaction}

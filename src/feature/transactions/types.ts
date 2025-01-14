@@ -6,6 +6,7 @@ export interface ITransactionData {
   date: string;
   from: string;
   to: string;
+  attachment: File;
 };
 
 export interface ITransactionsState {
