@@ -4,7 +4,7 @@ import Sidebar from "../../components/Sidebar";
 import EditUser from "./components/EditUser";
 import EditProfileIcon from "../../assets/edit_profile.svg";
 
-export default function Dashboard() {
+export default function Profile() {
   return (
     <div>
       <Header />

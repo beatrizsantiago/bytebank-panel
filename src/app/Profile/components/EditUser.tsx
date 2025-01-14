@@ -1,15 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Input, Button } from "@bytebank/styleguide";
 
+import { RootState } from "../../store";
+import { IUser } from "../../../feature/user/types";
+import toast from "../../../utils/toast";
+
 const EditUser = () => {
+  const userInfo = useSelector<RootState, IUser>((state) => state.user);
+
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
 
   const onSaveClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log("User updated");
+    toast({ text: 'Edição não implementada no backend.', type: 'WARNING' });
   };
+
+  useEffect(() => {
+    if (userInfo.username) {
+      setFullName(userInfo.username);
+    }
+  }, [userInfo])
 
   return (
     <form className="w-full flex justify-center" onSubmit={onSaveClick}>
@@ -34,6 +46,7 @@ const EditUser = () => {
           <Input
             placeholder="Digite seu e-mail"
             type="email"
+            defaultValue={userInfo.email}
             required
             disabled
           />
